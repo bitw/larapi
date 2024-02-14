@@ -1,0 +1,31 @@
+stages:
+  - build
+
+.image: &image
+  stage: build
+  when: always
+  only:
+    - master
+  image:
+    name: gcr.io/kaniko-project/executor:v1.14.0-debug
+    entrypoint: [ "" ]
+  tags:
+    - docker
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --target ${TARGET}
+      --destination "${CI_REGISTRY_IMAGE}:${IMAGE_TAG}"
+
+image:production:
+  variables:
+    TARGET: production
+    IMAGE_TAG: latest
+  <<: *image
+
+image:dev:
+  variables:
+    TARGET: dev
+    IMAGE_TAG: dev
+  <<: *image
