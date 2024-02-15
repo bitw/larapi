@@ -16,10 +16,6 @@ restart: down up
 
 pull-php:
 	docker pull ${APP_IMAGE_PHP} || /bin/true
-pull-front:
-	docker pull ${APP_IMAGE_FRONTEND} || /bin/true
-pull-dashboard:
-	docker pull ${APP_IMAGE_DASHBOARD} || /bin/true
 
 pull: pull-php
 
