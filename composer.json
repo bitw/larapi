@@ -9,7 +9,8 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "tightenco/ziggy": "^1.8"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",
@@ -18,8 +19,12 @@
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
+        "nunomaduro/larastan": "^2.9",
+        "phpstan/phpstan-mockery": "^1.1",
         "phpunit/phpunit": "^10.1",
-        "spatie/laravel-ignition": "^2.0"
+        "satesh/phpcs-gitlab-report": "^1.0",
+        "spatie/laravel-ignition": "^2.0",
+        "squizlabs/php_codesniffer": "^3.8"
     },
     "autoload": {
         "psr-4": {
@@ -49,7 +54,12 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "phpstan": "vendor/bin/phpstan analyse --error-format=gitlab -c phpstan.neon --memory-limit=1G --level=5 > codequality.json; err=$?; cat codequality.json; exit $err",
+        "code_sniffer": "vendor/bin/phpcs -p --no-cache --standard=phpcs.xml --report='\\Satesh\\Phpcs\\GitLabReport' --report-file=phpcs.json .",
+        "unit": "vendor/bin/phpunit -d memory_limit=1G --testsuit Unit --log-junit unit_junit.xml --coverage-text --coverage-clover unit_coverage.xml --colors=never",
+        "functional": "vendor/bin/phpunit -d memory_limit=1G --testsuit Functional --log-junit functional_junit.xml --coverage-text --coverage-clover functional_coverage.xml --colors=never",
+        "api": "vendor/bin/phpunit -d memory_limit=1G --testsuit Api --log-junit api_junit.xml --coverage-text --coverage-clover api_coverage.xml --colors=never"
     },
     "extra": {
         "laravel": {

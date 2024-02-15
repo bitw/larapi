@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         colors="true"
+<phpunit
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 >
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+        <exclude>
+            <directory>./routes</directory>
+        </exclude>
+    </coverage>
     <testsuites>
-        <testsuite name="Unit">
-            <directory>tests/Unit</directory>
+        <testsuite name="Functional">
+            <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
-        <testsuite name="Feature">
-            <directory>tests/Feature</directory>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
     </testsuites>
-    <source>
-        <include>
-            <directory>app</directory>
-        </include>
-    </source>
     <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="BCRYPT_ROUNDS" value="4"/>
-        <env name="CACHE_DRIVER" value="array"/>
-        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
-        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
-        <env name="MAIL_MAILER" value="array"/>
-        <env name="PULSE_ENABLED" value="false"/>
-        <env name="QUEUE_CONNECTION" value="sync"/>
-        <env name="SESSION_DRIVER" value="array"/>
-        <env name="TELESCOPE_ENABLED" value="false"/>
+        <server name="APP_ENV" value="testing"/>
+        <server name="APP_CACHE_DRIVER" value="array"/>
+        <server name="APP_SESSION_DRIVER" value="array"/>
+        <server name="APP_FILESYSTEM_DRIVER" value="local"/>
+        <server name="APP_FILESYSTEM_DRIVER_PUBLIC" value="local"/>
+        <server name="APP_FILESYSTEM_CLOUD" value="local"/>
+        <server name="APP_QUEUE_CONNECTION" value="sync"/>
+        <server name="APP_KAFKA_USE_STUB" value="true"/>
+        <server name="APP_BROADCAST_DRIVER" value="null"/>
+        <server name="APP_GUARD_DRIVER" value="session"/>
+        <server name="OAUTH2_EXPIRE_ACCESS_TOKEN" value="1 day"/>
+        <server name="OAUTH2_EXPIRE_REFRESH_TOKEN" value="1 month"/>
     </php>
 </phpunit>

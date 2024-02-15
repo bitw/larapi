@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 /volumes/*
 !/volumes/.gitignore
+codequality.json
+phpcs.json

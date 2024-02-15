@@ -51,4 +51,14 @@ dev-seed:
 test:
 	${PHP_FPM} ./vendor/bin/phpunit -d --memory_limit=1G $(arg)
 
-ci: test
+cs:
+	${PHP_FPM} composer --ansi run code_sniffer $(arg)
+#	${PHP_FPM} ./vendor/bin/phpcs -p --colors --standard=phpcs.xml $(arg)
+
+csf:
+	${PHP_FPM} ./vendor/bin/phpcbf --standard=phpcs.xml $(arg)
+
+stan:
+	${PHP_FPM} composer --ansi run phpstan
+
+ci: cs stan test

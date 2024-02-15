@@ -3,12 +3,25 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class AuthController extends Controller
 {
-    final public function getLogin(): View
+    final public function loginForm(): View
     {
         return view('login');
+    }
+
+    final public function login(): RedirectResponse
+    {
+        return Redirect::route('web.index');
+    }
+
+    final public function registrationForm(): RedirectResponse
+    {
+        return Redirect::route('web.index');
     }
 }

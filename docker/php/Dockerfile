@@ -33,6 +33,8 @@ FROM production as dev
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 RUN pecl install -f xdebug-3.3.1 \
+    && apt-get update \
+    && apt-get install -y  \
     && docker-php-ext-enable xdebug \
     && apt-get -y autoremove \
     && apt-get clean \

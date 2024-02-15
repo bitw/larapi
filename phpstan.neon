@@ -1,0 +1,17 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/phpstan/phpstan-mockery/extension.neon
+
+parameters:
+    inferPrivatePropertyTypeFromConstructor: true
+    level: 5
+    paths:
+        - app
+        - database
+        - resources
+        - routes
+        - tests
+    parallel:
+        jobSize: 20
+        maximumNumberOfProcesses: 5
+        minimumNumberOfJobsPerProcess: 2
