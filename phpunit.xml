@@ -1,45 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-    backupGlobals="false"
-    backupStaticAttributes="false"
-    bootstrap="vendor/autoload.php"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    processIsolation="false"
-    stopOnFailure="false"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
->
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./app</directory>
-        </include>
-        <exclude>
-            <directory>./routes</directory>
-        </exclude>
-    </coverage>
-    <testsuites>
-        <testsuite name="Functional">
-            <directory suffix="Test.php">./tests/Feature</directory>
-        </testsuite>
-        <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
-        </testsuite>
-    </testsuites>
-    <php>
-        <server name="APP_ENV" value="testing"/>
-        <server name="APP_CACHE_DRIVER" value="array"/>
-        <server name="APP_SESSION_DRIVER" value="array"/>
-        <server name="APP_FILESYSTEM_DRIVER" value="local"/>
-        <server name="APP_FILESYSTEM_DRIVER_PUBLIC" value="local"/>
-        <server name="APP_FILESYSTEM_CLOUD" value="local"/>
-        <server name="APP_QUEUE_CONNECTION" value="sync"/>
-        <server name="APP_KAFKA_USE_STUB" value="true"/>
-        <server name="APP_BROADCAST_DRIVER" value="null"/>
-        <server name="APP_GUARD_DRIVER" value="session"/>
-        <server name="OAUTH2_EXPIRE_ACCESS_TOKEN" value="1 day"/>
-        <server name="OAUTH2_EXPIRE_REFRESH_TOKEN" value="1 month"/>
-    </php>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" bootstrap="vendor/autoload.php" colors="true" processIsolation="false" stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" cacheDirectory=".phpunit.cache" backupStaticProperties="false">
+  <testsuites>
+    <testsuite name="Functional">
+      <directory suffix="Test.php">./tests/Feature</directory>
+    </testsuite>
+    <testsuite name="Unit">
+      <directory suffix="Test.php">./tests/Unit</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <server name="APP_ENV" value="testing"/>
+    <server name="APP_CACHE_DRIVER" value="array"/>
+    <server name="APP_SESSION_DRIVER" value="array"/>
+    <server name="APP_FILESYSTEM_DRIVER" value="local"/>
+    <server name="APP_FILESYSTEM_DRIVER_PUBLIC" value="local"/>
+    <server name="APP_FILESYSTEM_CLOUD" value="local"/>
+    <server name="APP_QUEUE_CONNECTION" value="sync"/>
+    <server name="APP_KAFKA_USE_STUB" value="true"/>
+    <server name="APP_BROADCAST_DRIVER" value="null"/>
+    <server name="APP_GUARD_DRIVER" value="session"/>
+    <server name="OAUTH2_EXPIRE_ACCESS_TOKEN" value="1 day"/>
+    <server name="OAUTH2_EXPIRE_REFRESH_TOKEN" value="1 month"/>
+  </php>
+  <source>
+    <include>
+      <directory suffix=".php">./app</directory>
+    </include>
+    <exclude>
+      <directory>./routes</directory>
+    </exclude>
+  </source>
 </phpunit>

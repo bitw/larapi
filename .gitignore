@@ -21,3 +21,4 @@ yarn-error.log
 !/volumes/.gitignore
 codequality.json
 phpcs.json
+.phpcs-cache

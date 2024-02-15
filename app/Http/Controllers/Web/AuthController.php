@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use Symfony\Component\Routing\Attribute\Route;
 
 final class AuthController extends Controller
 {

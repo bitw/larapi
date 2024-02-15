@@ -1,4 +1,5 @@
 <?php
+
 const MIDDLEWARE_GROUP_API_PUBLIC = 'mw-group-api-public';
 const MIDDLEWARE_GROUP_API_USER = 'mw-group-api-user';
 const MIDDLEWARE_GROUP_API_MANAGER = 'mw-group-api-manager';

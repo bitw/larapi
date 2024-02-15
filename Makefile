@@ -61,4 +61,7 @@ csf:
 stan:
 	${PHP_FPM} composer --ansi run phpstan
 
-ci: cs stan test
+pint:
+	${PHP_FPM} ./vendor/bin/pint $(arg)
+
+ci: pint cs stan test

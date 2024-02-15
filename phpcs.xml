@@ -8,6 +8,8 @@
 
     <rule ref="PSR12">
         <exclude name="Generic.Files.LineLength"/>
+        <exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+        <exclude name="PSR12.Operators.OperatorSpacing"/>
     </rule>
 
     <file>./</file>

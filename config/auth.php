@@ -48,7 +48,7 @@ return [
         ],
         GUARD_API_USER => [
             'driver' => 'token',
-        ]
+        ],
     ],
 
     /*
