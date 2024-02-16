@@ -2,7 +2,9 @@
 
 namespace App\Http;
 
+use App\Enums\GuardsEnum;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CheckGuard;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -68,6 +70,29 @@ class Kernel extends HttpKernel
             EnsureFrontendRequestsAreStateful::class,
             ThrottleRequests::class.':api',
             SubstituteBindings::class,
+        ],
+
+        GuardsEnum::GUARD_API_ADMIN->value => [
+            EnsureFrontendRequestsAreStateful::class,
+            ThrottleRequests::class.':api',
+            SubstituteBindings::class,
+            CheckGuard::class.':'.GuardsEnum::GUARD_API_ADMIN->value,
+        ],
+
+
+        GuardsEnum::GUARD_API_MANAGER->value => [
+            EnsureFrontendRequestsAreStateful::class,
+            ThrottleRequests::class.':api',
+            SubstituteBindings::class,
+            CheckGuard::class.':'.GuardsEnum::GUARD_API_MANAGER->value,
+        ],
+
+
+        GuardsEnum::GUARD_API_CUSTOMER->value => [
+            EnsureFrontendRequestsAreStateful::class,
+            ThrottleRequests::class.':api',
+            SubstituteBindings::class,
+            CheckGuard::class.':'.GuardsEnum::GUARD_API_CUSTOMER->value,
         ],
     ];
 

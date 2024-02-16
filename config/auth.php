@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\GuardsEnum;
+
 return [
 
     /*
@@ -15,7 +17,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'customers',
     ],
 
     /*
@@ -38,16 +40,22 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'customers',
         ],
-        GUARD_API_ADMIN => [
-            'driver' => 'token',
+        GuardsEnum::GUARD_API_ADMIN->value => [
+            'driver' => 'session',
+            'provider' => 'employees',
+            'remember' => 60 * 24 * 30,
         ],
-        GUARD_API_MANAGER => [
-            'driver' => 'token',
+        GuardsEnum::GUARD_API_MANAGER->value => [
+            'driver' => 'session',
+            'provider' => 'employees',
+            'remember' => 60 * 24 * 30,
         ],
-        GUARD_API_USER => [
-            'driver' => 'token',
+        GuardsEnum::GUARD_API_CUSTOMER->value => [
+            'driver' => 'session',
+            'provider' => 'customers',
+            'remember' => 60 * 24 * 30,
         ],
     ],
 
@@ -69,9 +77,13 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'employees' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Employee::class,
+        ],
+        'customers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Customer::class,
         ],
 
         // 'users' => [
@@ -100,8 +112,14 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'employees' => [
+            'provider' => 'employees',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'customers' => [
+            'provider' => 'customers',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

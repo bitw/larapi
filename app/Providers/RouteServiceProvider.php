@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\GuardsEnum;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -12,10 +13,7 @@ class RouteServiceProvider extends ServiceProvider
 {
     /**
      * The path to your application's "home" route.
-     *
      * Typically, users are redirected here after authentication.
-     *
-     * @var string
      */
     public const HOME = '/';
 
@@ -29,17 +27,14 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api-admin')
-                ->group(base_path('routes/api-admin.php'));
+            foreach (GuardsEnum::cases() as $guardsEnum) {
+                Route::middleware($guardsEnum->value)
+                    ->prefix($guardsEnum->value)
+                    ->group(base_path('routes/' . $guardsEnum->value . '.php'));
+            }
 
             Route::middleware('api')
-                ->prefix('api-manager')
-                ->group(base_path('routes/api-admin.php'));
-
-            Route::middleware('api')
-                ->prefix('api-user')
-                ->group(base_path('routes/api-admin.php'));
+                ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));

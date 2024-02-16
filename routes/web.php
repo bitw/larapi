@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])
+Route::middleware('auth:sanctum')->get('/', [HomeController::class, 'index'])
     ->name('web.index');
 
 Route::get('/login', [AuthController::class, 'loginForm'])

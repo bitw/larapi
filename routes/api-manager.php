@@ -10,3 +10,12 @@
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware('auth:sanctum')
+    ->get('/qaz', function (Request $request) {
+        return new JsonResponse($request->user());
+    });

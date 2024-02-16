@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\GuardsEnum;
 use Laravel\Sanctum\Sanctum;
 
 return [
@@ -33,7 +34,12 @@ return [
     |
     */
 
-    'guard' => ['web'],
+    'guard' => [
+        'web',
+        GuardsEnum::GUARD_API_ADMIN->value,
+        GuardsEnum::GUARD_API_MANAGER->value,
+        GuardsEnum::GUARD_API_CUSTOMER->value,
+    ],
 
     /*
     |--------------------------------------------------------------------------

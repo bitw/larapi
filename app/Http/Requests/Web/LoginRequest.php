@@ -12,7 +12,7 @@ class LoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return !auth()->hasUser();
     }
 
     /**
@@ -25,6 +25,14 @@ class LoginRequest extends FormRequest
         return [
             'email' => 'required|email',
             'password' => 'required',
+        ];
+    }
+
+    public function getCredentials(): array
+    {
+        return [
+            'email' => $this->input('email'),
+            'password' => $this->input('password'),
         ];
     }
 }

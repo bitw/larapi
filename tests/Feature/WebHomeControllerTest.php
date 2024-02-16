@@ -4,15 +4,15 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class WebHomeControllerTest extends TestCase
 {
     /**
      * A basic test example.
      */
     public function testTheApplicationReturnsSuccessfulResponse(): void
     {
-        $response = $this->get('/');
+        $response = $this->get(route('web.index'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 }

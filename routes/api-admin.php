@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,8 @@ Route::middleware('auth:sanctum')
         return $request->user();
     });
 */
+
+Route::middleware('auth:sanctum')
+    ->get('/qaz', function (Request $request) {
+        return new JsonResponse($request->user());
+    });
