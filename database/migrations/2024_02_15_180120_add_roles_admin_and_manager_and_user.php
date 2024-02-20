@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Repositories\CustomerRepository;
 use App\Repositories\EmployeeRepository;
-use App\Repositories\RoleRepository;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\Hash;
 
 return new class () extends Migration {
     /**
@@ -19,8 +18,21 @@ return new class () extends Migration {
         $employeeRepository->createAdmin(
             name: 'Admin',
             email:'admin@example.com',
-            password: Hash::make('password-123-secret'),
-            roleRepository: app(RoleRepository::class)
+            password: 'password-123-admin',
+        );
+
+        $employeeRepository->createManager(
+            name: 'Manager',
+            email:'manager@example.com',
+            password: 'password-123-manager',
+        );
+
+        /** @var CustomerRepository $customerRepository */
+        $customerRepository = app(CustomerRepository::class);
+        $customerRepository->create(
+            name: 'Customer',
+            email: 'customer@example.com',
+            password: 'password-123-customer',
         );
     }
 };

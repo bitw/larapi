@@ -2,18 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Exceptions\CreateEmployeeAdminException;
+use App\Exceptions\CreateRoleException;
 use Spatie\Permission\Models\Role;
 
 class RoleRepository
 {
     /**
-     * @throws CreateEmployeeAdminException
+     * @throws CreateRoleException
      */
-    public function createRoleIfNotExist(
+    final public function createRoleIfNotExist(
         string $name,
         ?string $guardName,
     ): Role {
+        if (empty(trim($name))) {
+            throw new CreateRoleException('Role name not specified.');
+        }
+
         /** @var Role $role */
         $role = Role::findOrCreate(
             $name,
@@ -21,5 +25,11 @@ class RoleRepository
         );
 
         return $role;
+    }
+
+    final public function findByName(string $name): Role
+    {
+        return Role::where('name', $name)
+            ->first();
     }
 }

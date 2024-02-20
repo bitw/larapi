@@ -10,8 +10,13 @@ use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class EmployeeRepository
+readonly class EmployeeRepository
 {
+    public function __construct(
+        protected RoleRepository $roleRepository
+    ) {
+    }
+
     /**
      * @throws CreateEmployeeAdminException
      */
@@ -19,7 +24,6 @@ class EmployeeRepository
         string $name,
         string $email,
         string $password,
-        RoleRepository $roleRepository,
     ): Employee {
         DB::beginTransaction();
         try {
@@ -32,7 +36,7 @@ class EmployeeRepository
             ]);
 
             $employee->assignRole(
-                $roleRepository->createRoleIfNotExist(
+                $this->roleRepository->createRoleIfNotExist(
                     RolesEnum::ADMIN->value,
                     GuardsEnum::GUARD_API_ADMIN->value
                 )
@@ -50,7 +54,6 @@ class EmployeeRepository
         string $name,
         string $email,
         string $password,
-        RoleRepository $roleRepository,
     ): Employee {
         DB::beginTransaction();
         try {
@@ -63,7 +66,7 @@ class EmployeeRepository
             ]);
 
             $employee->assignRole(
-                $roleRepository->createRoleIfNotExist(
+                $this->roleRepository->createRoleIfNotExist(
                     RolesEnum::EMPLOYEE_MANAGER->value,
                     GuardsEnum::GUARD_API_MANAGER->value
                 )

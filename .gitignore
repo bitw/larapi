@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/psysh
 .env
 .env.backup
 .env.production
