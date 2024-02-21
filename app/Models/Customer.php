@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -42,6 +43,7 @@ class Customer extends Authenticatable
     use HasFactory;
     use Notifiable;
     use HasRoles;
+    use HasPermissions;
 
     /**
      * The attributes that are mass assignable.

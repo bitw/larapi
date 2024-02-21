@@ -9,7 +9,6 @@ use App\Exceptions\UpdateCustomerException;
 use App\Models\Customer;
 use App\Repositories\CustomerRepository;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class CustomerService
 {
@@ -25,9 +24,6 @@ class CustomerService
     public function createCustomer(
         array $attributes
     ): Customer {
-        if (isset($attributes['password'])) {
-            $attributes['password'] = Hash::make($attributes['password']);
-        }
         try {
             DB::beginTransaction();
             $customer = Customer::create($attributes);

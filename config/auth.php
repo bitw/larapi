@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\GuardsEnum;
+use App\Models\Customer;
+use App\Models\Employee;
 
 return [
 
@@ -40,21 +42,21 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'customers',
+            'provider' => 'customer',
         ],
         GuardsEnum::GUARD_API_ADMIN->value => [
             'driver' => 'session',
-            'provider' => 'employees',
+            'provider' => 'employee',
             'remember' => 60 * 24 * 30,
         ],
         GuardsEnum::GUARD_API_MANAGER->value => [
             'driver' => 'session',
-            'provider' => 'employees',
+            'provider' => 'employee',
             'remember' => 60 * 24 * 30,
         ],
         GuardsEnum::GUARD_API_CUSTOMER->value => [
             'driver' => 'session',
-            'provider' => 'customers',
+            'provider' => 'customer',
             'remember' => 60 * 24 * 30,
         ],
     ],
@@ -77,13 +79,13 @@ return [
     */
 
     'providers' => [
-        'employees' => [
+        'employee' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Employee::class,
+            'model' => Employee::class,
         ],
-        'customers' => [
+        'customer' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Customer::class,
+            'model' => Customer::class,
         ],
 
         // 'users' => [

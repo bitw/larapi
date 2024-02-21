@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class WebHomeControllerTest extends TestCase
@@ -11,8 +12,8 @@ class WebHomeControllerTest extends TestCase
      */
     public function testTheApplicationReturnsSuccessfulResponse(): void
     {
-        $response = $this->get(route('web.index'));
+        $response = $this->get('/');
 
-        $response->assertStatus(302);
+        $response->assertStatus(Response::HTTP_OK);
     }
 }

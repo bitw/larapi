@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\Web\AuthController;
-use App\Http\Controllers\Web\HomeController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,16 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/', [HomeController::class, 'index'])
+Route::get('/', fn (Request $request) => view('index'))
     ->name('web.index');
-
-Route::get('/login', [AuthController::class, 'loginForm'])
-    ->name('web.login-form');
-
-Route::post('/login', [AuthController::class, 'login'])
-    ->name('web.login');
-
-if (config('common.app_allow_web_registration')) {
-    Route::get('/registration', [AuthController::class, 'registrationForm'])
-        ->name('web.registration-form');
-}

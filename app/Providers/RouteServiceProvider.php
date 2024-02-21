@@ -27,10 +27,10 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
-            foreach (GuardsEnum::cases() as $guardsEnum) {
-                Route::middleware($guardsEnum->value)
-                    ->prefix($guardsEnum->value)
-                    ->group(base_path('routes/' . $guardsEnum->value . '.php'));
+            foreach (GuardsEnum::values() as $guard) {
+                Route::prefix($guard)
+                    ->middleware($guard)
+                    ->group(base_path('routes/' . $guard . '.php'));
             }
 
             Route::middleware('api')

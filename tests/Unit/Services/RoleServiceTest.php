@@ -28,7 +28,7 @@ class RoleServiceTest extends TestCase
     public function testCreateRoleIfNotExistSuccess(): void
     {
         $role = $this->roleService->createRoleIfNotExist(
-            name: RolesEnum::ADMIN->value,
+            name: RolesEnum::EMPLOYEE_ADMIN->value,
             guardName: GuardsEnum::GUARD_API_ADMIN->value
         );
         $this->assertInstanceOf(Role::class, $role);

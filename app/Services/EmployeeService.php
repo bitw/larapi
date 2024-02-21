@@ -23,25 +23,21 @@ class EmployeeService
     public function createAdmin(
         array $attributes
     ): Employee {
-        if (isset($attributes['password'])) {
-            $attributes['password'] = Hash::make($attributes['password']);
-        }
         try {
             DB::beginTransaction();
-            /** @var Employee $employee */
             $employee = Employee::create($attributes);
 
             $employee->assignRole(
                 $this->roleService->createRoleIfNotExist(
-                    RolesEnum::ADMIN->value,
+                    RolesEnum::EMPLOYEE_ADMIN->value,
                     GuardsEnum::GUARD_API_ADMIN->value
                 )
             );
+            DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
             throw new CreateEmployeeAdminException($e);
         }
-        DB::commit();
 
         return $employee;
     }

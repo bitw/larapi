@@ -27,6 +27,3 @@ Route::post('/{guard}/login', function (LoginRequest $request) {
             ->createToken('default')->plainTextToken])
         : new UnauthorizedJsonResponse(['error' => __('common.invalid_email_or_password')]);
 })->where('guard', collect(GuardsEnum::cases())->map(fn (GuardsEnum $guard) => $guard->value)->implode('|'));
-
-// Customer bearer token
-// 1|G1jX7ETeTx4HJhtcUu8Ma7pjiM4tz6MrCUMION2vdc9ca733
