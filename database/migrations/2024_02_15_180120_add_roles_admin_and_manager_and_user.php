@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Repositories\CustomerRepository;
+use App\Services\CustomerService;
 use App\Services\EmployeeService;
 use Illuminate\Database\Migrations\Migration;
 
@@ -12,24 +12,24 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        /** @var EmployeeService $employeeRepository */
-        $employeeRepository = app(EmployeeService::class);
+        /** @var EmployeeService $employeeService */
+        $employeeService = app(EmployeeService::class);
 
-        $employeeRepository->createAdmin(
-            name: 'Admin',
-            email:'admin@example.com',
-            password: 'password-123-admin',
-        );
+        $employeeService->createAdmin([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => 'password-123-admin',
+        ]);
 
-        $employeeRepository->createManager(
-            name: 'Manager',
-            email:'manager@example.com',
-            password: 'password-123-manager',
-        );
+        $employeeService->createManager([
+            'name' => 'Manager',
+            'email' => 'manager@example.com',
+            'password' => 'password-123-manager',
+        ]);
 
-        /** @var CustomerRepository $customerRepository */
-        $customerRepository = app(CustomerRepository::class);
-        $customerRepository->create([
+        /** @var CustomerService $customerService */
+        $customerService = app(CustomerService::class);
+        $customerService->createCustomer([
                 'name' => 'Customer',
                 'email' => 'customer@example.com',
                 'password' => 'password-123-customer',

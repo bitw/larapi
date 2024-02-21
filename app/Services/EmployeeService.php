@@ -21,19 +21,15 @@ class EmployeeService
      * @throws CreateEmployeeAdminException
      */
     public function createAdmin(
-        string $name,
-        string $email,
-        string $password,
+        array $attributes
     ): Employee {
-        DB::beginTransaction();
+        if (isset($attributes['password'])) {
+            $attributes['password'] = Hash::make($attributes['password']);
+        }
         try {
+            DB::beginTransaction();
             /** @var Employee $employee */
-            $employee = Employee::create([
-                'name' => $name,
-                'email' => $email,
-                'password' => Hash::make($password),
-                'email_verified_at' => now(),
-            ]);
+            $employee = Employee::create($attributes);
 
             $employee->assignRole(
                 $this->roleService->createRoleIfNotExist(
@@ -50,20 +46,19 @@ class EmployeeService
         return $employee;
     }
 
+    /**
+     * @throws CreateEmployeeManagerException
+     */
     public function createManager(
-        string $name,
-        string $email,
-        string $password,
+        array $attributes
     ): Employee {
-        DB::beginTransaction();
+        if (isset($attributes['password'])) {
+            $attributes['password'] = Hash::make($attributes['password']);
+        }
         try {
+            DB::beginTransaction();
             /** @var Employee $employee */
-            $employee = Employee::create([
-                'name' => $name,
-                'email' => $email,
-                'password' => Hash::make($password),
-                'email_verified_at' => now(),
-            ]);
+            $employee = Employee::create($attributes);
 
             $employee->assignRole(
                 $this->roleService->createRoleIfNotExist(
@@ -71,11 +66,11 @@ class EmployeeService
                     GuardsEnum::GUARD_API_MANAGER->value
                 )
             );
+            DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
             throw new CreateEmployeeManagerException($e);
         }
-        DB::commit();
 
         return $employee;
     }

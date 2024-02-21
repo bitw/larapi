@@ -71,16 +71,11 @@ class CustomerServiceTest extends TestCase
     }
 
     /**
-     * @throws CreateCustomerException
      * @throws UpdateCustomerException
      */
-    public function testUpdateCustomer(): void
+    public function testUpdateCustomerSuccess(): void
     {
-        $customer = $this->customerService->createCustomer([
-            'name' => $this->faker->name,
-            'email' => $this->faker->email,
-            'password' => $this->faker->password,
-        ]);
+        $customer = Customer::factory()->create();
 
         $this->customerService->updateCustomer($customer, [
             'name' => $name = $this->faker->name,
@@ -91,5 +86,19 @@ class CustomerServiceTest extends TestCase
 
         $this->assertEquals($customer->name, $name);
         $this->assertEquals($customer->email, $email);
+    }
+
+    /**
+     * @throws UpdateCustomerException
+     */
+    public function testUpdateCustomerError(): void
+    {
+        $customer = Customer::factory()->create();
+
+        $this->expectException(UpdateCustomerException::class);
+        $this->customerService->updateCustomer($customer, [
+            'name' => '',
+            'email' => $email = $this->faker->email,
+        ]);
     }
 }

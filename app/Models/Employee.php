@@ -5,9 +5,11 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
@@ -78,5 +80,28 @@ class Employee extends Authenticatable
         static::creating(function (Employee $employee) {
             $employee->ulid = (string) Str::ulid();
         });
+    }
+
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => empty(trim($value)) ? null : $value,
+        );
+    }
+
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            set: function (string $value) {
+                $validate = Validator::make(
+                    ['email' => $value],
+                    ['email' => 'required', 'email']
+                );
+                if ($validate->fails()) {
+                    throw new \Exception($validate->errors()->first());
+                }
+                return $value;
+            }
+        );
     }
 }

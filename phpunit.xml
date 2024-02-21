@@ -28,6 +28,7 @@
     </include>
     <exclude>
       <directory>./routes</directory>
+      <directory>./app/Providers</directory>
     </exclude>
   </source>
 </phpunit>
