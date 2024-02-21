@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Repositories\CustomerRepository;
-use App\Repositories\EmployeeRepository;
+use App\Services\EmployeeService;
 use Illuminate\Database\Migrations\Migration;
 
 return new class () extends Migration {
@@ -12,8 +12,8 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        /** @var EmployeeRepository $employeeRepository */
-        $employeeRepository = app(EmployeeRepository::class);
+        /** @var EmployeeService $employeeRepository */
+        $employeeRepository = app(EmployeeService::class);
 
         $employeeRepository->createAdmin(
             name: 'Admin',
@@ -29,10 +29,10 @@ return new class () extends Migration {
 
         /** @var CustomerRepository $customerRepository */
         $customerRepository = app(CustomerRepository::class);
-        $customerRepository->create(
-            name: 'Customer',
-            email: 'customer@example.com',
-            password: 'password-123-customer',
-        );
+        $customerRepository->create([
+                'name' => 'Customer',
+                'email' => 'customer@example.com',
+                'password' => 'password-123-customer',
+        ]);
     }
 };

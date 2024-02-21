@@ -5,9 +5,11 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -19,6 +21,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $ulid
  * @property string|null $name
  * @property string|null $email
+ * @property string $password
+ * @property CarbonInterface|null $email_verified_at
  * @property CarbonInterface $created_at
  * @property CarbonInterface|null $updated_at
  * @property CarbonInterface|null $blocked_at
@@ -74,7 +78,30 @@ class Customer extends Authenticatable
     {
         parent::boot();
         static::creating(function (Customer $customer) {
-            $customer->ulid = (string) Str::ulid();
+            $customer->ulid = (string)Str::ulid();
         });
+    }
+
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => empty(trim($value)) ? null : $value,
+        );
+    }
+
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            set: function (string $value) {
+                $validate = Validator::make(
+                    ['email' => $value],
+                    ['email' => 'required', 'email']
+                );
+                if ($validate->fails()) {
+                    throw new \Exception($validate->errors()->first());
+                }
+                return $value;
+            }
+        );
     }
 }

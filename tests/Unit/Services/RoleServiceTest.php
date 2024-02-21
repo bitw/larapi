@@ -1,24 +1,25 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Services;
 
 use App\Enums\GuardsEnum;
 use App\Enums\RolesEnum;
 use App\Exceptions\CreateRoleException;
-use App\Repositories\RoleRepository;
+use App\Services\RoleService;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
-class RoleRepositoryTest extends TestCase
+class RoleServiceTest extends TestCase
 {
-    public RoleRepository $roleRepository;
+    private RoleService $roleService;
 
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var RoleRepository $roleRepository */
-        $roleRepository = app(RoleRepository::class);
-        $this->roleRepository = $roleRepository;
+
+        /** @var RoleService $roleService */
+        $roleService = app(RoleService::class);
+        $this->roleService = $roleService;
     }
 
     /**
@@ -26,7 +27,7 @@ class RoleRepositoryTest extends TestCase
      */
     public function testCreateRoleIfNotExistSuccess(): void
     {
-        $role = $this->roleRepository->createRoleIfNotExist(
+        $role = $this->roleService->createRoleIfNotExist(
             name: RolesEnum::ADMIN->value,
             guardName: GuardsEnum::GUARD_API_ADMIN->value
         );
@@ -36,7 +37,7 @@ class RoleRepositoryTest extends TestCase
     public function testCreateRoleIfNotExistErrorEmptyName(): void
     {
         $this->expectException(CreateRoleException::class);
-        $this->roleRepository->createRoleIfNotExist(
+        $this->roleService->createRoleIfNotExist(
             name: '',
             guardName: GuardsEnum::GUARD_API_ADMIN->value
         );
@@ -48,7 +49,7 @@ class RoleRepositoryTest extends TestCase
     public function testCreateRoleIfNotExistErrorNameIsNull(): void
     {
         $this->expectException(\TypeError::class);
-        $this->roleRepository->createRoleIfNotExist(
+        $this->roleService->createRoleIfNotExist(
             name: null, // @phpstan-ignore-line
             guardName: GuardsEnum::GUARD_API_ADMIN->value
         );

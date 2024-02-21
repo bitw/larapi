@@ -4,62 +4,38 @@ namespace App\Repositories;
 
 use App\Enums\GuardsEnum;
 use App\Enums\RolesEnum;
-use App\Exceptions\CreateCustomerException;
+use App\Exceptions\CreateRoleException;
 use App\Models\Customer;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Services\RoleService;
 
-readonly class CustomerRepository
+class CustomerRepository
 {
     public function __construct(
-        protected RoleRepository $roleRepository
+        protected RoleService $roleService
     ) {
     }
 
     /**
-     * @throws CreateCustomerException
+     * @throws CreateRoleException
      */
     public function create(
-        string $name,
-        string $email,
-        string $password,
+        array $attributes,
     ): Customer {
-        if (empty(trim($name))) {
-            throw new CreateCustomerException('The $name cannot be empty.');
-        }
+        $customer = Customer::create($attributes);
 
-        if (empty(trim($email))) {
-            throw new CreateCustomerException('The $email cannot be empty.');
-        }
-
-        if (Validator::make(['email' => $email], ['email' => 'email'])->fails()) {
-            throw new CreateCustomerException('The $email invalid format.');
-        }
-
-        DB::beginTransaction();
-        try {
-            /** @var Customer $customer */
-            $customer = Customer::create([
-                'name' => $name,
-                'email' => $email,
-                'password' => Hash::make($password),
-                'email_verified_at' => now(),
-            ]);
-
-            $customer->assignRole(
-                $this->roleRepository->createRoleIfNotExist(
-                    RolesEnum::CUSTOMER->value,
-                    GuardsEnum::GUARD_API_CUSTOMER->value
-                )
-            );
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            throw new CreateCustomerException($e);
-        }
-        DB::commit();
+        $customer->assignRole(
+            $this->roleService->createRoleIfNotExist(
+                RolesEnum::CUSTOMER->value,
+                GuardsEnum::GUARD_API_CUSTOMER->value
+            )
+        );
 
         return $customer;
+    }
+
+    public function update(Customer $customer, array $attributes): bool
+    {
+        return $customer->update($attributes);
     }
 
     public function findById(int $id): Customer

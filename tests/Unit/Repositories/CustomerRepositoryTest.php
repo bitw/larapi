@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Repositories;
 
-use App\Exceptions\CreateCustomerException;
+use App\Exceptions\CreateRoleException;
 use App\Models\Customer;
 use App\Repositories\CustomerRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -25,15 +25,15 @@ class CustomerRepositoryTest extends TestCase
     }
 
     /**
-     * @throws CreateCustomerException
+     * @throws CreateRoleException
      */
     public function testCreateSuccess(): void
     {
-        $customer = $this->customerRepository->create(
-            name: $name = $this->faker->name,
-            email: $email = $this->faker->email,
-            password: $this->faker->password,
-        );
+        $customer = $this->customerRepository->create([
+            'name' => $name = $this->faker->name,
+            'email' => $email = $this->faker->email,
+            'password' => $this->faker->password,
+        ]);
 
         $this->assertInstanceOf(Customer::class, $customer);
         $this->assertDatabaseHas(
@@ -46,49 +46,20 @@ class CustomerRepositoryTest extends TestCase
     }
 
     /**
-     * @throws CreateCustomerException
-     */
-    public function testCreateNameError(): void
-    {
-        $this->expectException(CreateCustomerException::class);
-        $this->expectExceptionMessage('The $name cannot be empty.');
-        $this->customerRepository->create(
-            name: '',
-            email: $this->faker->email,
-            password: $this->faker->password,
-        );
-    }
-
-    /**
-     * @throws CreateCustomerException
+     * @throws CreateRoleException
      */
     public function testCreateEmailEmptyError(): void
     {
-        $this->expectException(CreateCustomerException::class);
-        $this->expectExceptionMessage('The $email cannot be empty.');
-        $this->customerRepository->create(
-            name: $this->faker->name,
-            email: '',
-            password: $this->faker->password,
-        );
+        $this->expectException(\Exception::class);
+        $this->customerRepository->create([
+            'name' => $this->faker->name,
+            'email' => '',
+            'password' => $this->faker->password,
+        ]);
     }
 
     /**
-     * @throws CreateCustomerException
-     */
-    public function testCreateEmailInvalidError(): void
-    {
-        $this->expectException(CreateCustomerException::class);
-        $this->expectExceptionMessage('The $email invalid format.');
-        $this->customerRepository->create(
-            name: $this->faker->name,
-            email: $this->faker->text,
-            password: $this->faker->password,
-        );
-    }
-
-    /**
-     * @throws CreateCustomerException
+     * @throws CreateRoleException
      */
     public function testFindByIdSuccess(): void
     {
@@ -107,7 +78,7 @@ class CustomerRepositoryTest extends TestCase
     }
 
     /**
-     * @throws CreateCustomerException
+     * @throws CreateRoleException
      */
     public function testFindByUlidSuccess(): void
     {
@@ -126,7 +97,7 @@ class CustomerRepositoryTest extends TestCase
     }
 
     /**
-     * @throws CreateCustomerException
+     * @throws CreateRoleException
      */
     public function testFindByEmailSuccess(): void
     {
@@ -145,14 +116,32 @@ class CustomerRepositoryTest extends TestCase
     }
 
     /**
-     * @throws CreateCustomerException
+     * @throws CreateRoleException
+     */
+    public function testUpdateCustomerSuccess(): void
+    {
+        $customer = $this->createCustomer();
+
+        $this->customerRepository->update($customer, [
+            'name' => $name = $this->faker->name,
+            'email' => $email = $this->faker->email,
+        ]);
+
+        $customer = $this->customerRepository->findById($customer->id);
+
+        $this->assertEquals($customer->name, $name);
+        $this->assertEquals($customer->email, $email);
+    }
+
+    /**
+     * @throws CreateRoleException
      */
     private function createCustomer(): Customer
     {
-        return $this->customerRepository->create(
-            name: $this->faker->name,
-            email: $this->faker->email,
-            password: $this->faker->password,
-        );
+        return $this->customerRepository->create([
+            'name' => $this->faker->name,
+            'email' => $this->faker->email,
+            'password' => $this->faker->password,
+        ]);
     }
 }

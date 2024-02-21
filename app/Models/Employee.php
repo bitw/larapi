@@ -27,6 +27,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|self newModelQuery()
  * @method static Builder|self newQuery()
  * @method static Builder|self query()
+ * @method static Builder|self create(array $attributes)
  * @method static Builder|self first()
  * @method static Builder|self firstOrFail()
  * @method static Builder|self find($value)
