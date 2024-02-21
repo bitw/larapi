@@ -23,3 +23,4 @@ yarn-error.log
 codequality.json
 phpcs.json
 .phpcs-cache
+rector-report.json

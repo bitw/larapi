@@ -20,8 +20,6 @@ class CustomerService
     }
 
     /**
-     * @param array $attributes
-     * @return Customer
      * @throws CreateCustomerException
      */
     public function createCustomer(

@@ -49,7 +49,6 @@ test:
 
 cs:
 	${PHP_FPM} composer --ansi run code_sniffer $(arg)
-#	${PHP_FPM} ./vendor/bin/phpcs -p --colors --standard=phpcs.xml $(arg)
 
 csf:
 	${PHP_FPM} ./vendor/bin/phpcbf --standard=phpcs.xml $(arg)
@@ -61,3 +60,6 @@ pint:
 	${PHP_FPM} ./vendor/bin/pint $(arg)
 
 ci: pint cs stan test
+
+rector:
+	${PHP_FPM} ./vendor/bin/rector --dry-run --memory-limit=1G > rector-report.json
