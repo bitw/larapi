@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\GuardsEnum;
 use Laravel\Sanctum\Sanctum;
 
 return [
@@ -18,7 +17,8 @@ return [
 
     'stateful' => explode(',', (string) env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
-        'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
+        '',
+        //'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
         Sanctum::currentApplicationUrlWithPort()
     ))),
 
@@ -36,9 +36,7 @@ return [
 
     'guard' => [
         'web',
-        GuardsEnum::GUARD_API_ADMIN->value,
-        GuardsEnum::GUARD_API_MANAGER->value,
-        GuardsEnum::GUARD_API_CUSTOMER->value,
+        'api',
     ],
 
     /*

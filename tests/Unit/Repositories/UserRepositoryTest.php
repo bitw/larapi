@@ -2,72 +2,72 @@
 
 namespace Unit\Repositories;
 
-use App\Models\Employee;
-use App\Repositories\EmployeeRepository;
+use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class EmployeeRepositoryTest extends TestCase
+class UserRepositoryTest extends TestCase
 {
     use WithFaker;
 
-    private EmployeeRepository $employeeRepository;
+    private UserRepository $userRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var EmployeeRepository $employeeRepository */
-        $employeeRepository = app(EmployeeRepository::class);
-        $this->employeeRepository = $employeeRepository;
+        /** @var UserRepository $userRepository */
+        $userRepository = app(UserRepository::class);
+        $this->userRepository = $userRepository;
     }
 
     public function testFindByIdSuccess(): void
     {
-        $employee = Employee::factory()->create();
+        $employee = User::factory()->create();
 
         $this->assertInstanceOf(
-            Employee::class,
-            $this->employeeRepository->findById($employee->id)
+            User::class,
+            $this->userRepository->findById($employee->id)
         );
     }
 
     public function testFindByIdNotFoundException(): void
     {
         $this->expectException(ModelNotFoundException::class);
-        $this->employeeRepository->findById(0);
+        $this->userRepository->findById(0);
     }
 
     public function testFindByUlidSuccess(): void
     {
-        $employee = Employee::factory()->create();
+        $employee = User::factory()->create();
 
         $this->assertInstanceOf(
-            Employee::class,
-            $this->employeeRepository->findByUlid($employee->ulid)
+            User::class,
+            $this->userRepository->findByUlid($employee->ulid)
         );
     }
 
     public function testFindByUlidNotFoundException(): void
     {
         $this->expectException(ModelNotFoundException::class);
-        $this->employeeRepository->findByUlid(Str::ulid());
+        $this->userRepository->findByUlid(Str::ulid());
     }
 
     public function testFindByEmailSuccess(): void
     {
-        $employee = Employee::factory()->create();
+        $user = User::factory()->create();
 
         $this->assertInstanceOf(
-            Employee::class,
-            $this->employeeRepository->findByEmail($employee->email)
+            User::class,
+            $this->userRepository->findByEmail($user->email)
         );
     }
 
     public function testFindByEmailNotFound(): void
     {
         $this->expectException(ModelNotFoundException::class);
-        $this->employeeRepository->findByEmail($this->faker->email);
+        $this->userRepository->findByEmail($this->faker->email);
     }
 }

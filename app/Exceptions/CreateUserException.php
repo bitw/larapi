@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class CreateCustomerException extends Exception
+class CreateUserException extends Exception
 {
     //
 }

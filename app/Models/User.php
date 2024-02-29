@@ -37,7 +37,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|self find($value)
  * @method static Builder|self findOrFail($value)
  */
-class Customer extends Authenticatable
+class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
@@ -76,10 +76,12 @@ class Customer extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected string $guard_name = 'api';
+
     protected static function boot(): void
     {
         parent::boot();
-        static::creating(function (Customer $customer) {
+        static::creating(function (User $customer) {
             $customer->ulid = (string)Str::ulid();
         });
     }

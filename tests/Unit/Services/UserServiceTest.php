@@ -2,41 +2,41 @@
 
 namespace Tests\Unit\Services;
 
-use App\Exceptions\CreateCustomerException;
-use App\Exceptions\UpdateCustomerException;
-use App\Models\Customer;
-use App\Services\CustomerService;
+use App\Exceptions\CreateUserException;
+use App\Exceptions\UserUpdateException;
+use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class CustomerServiceTest extends TestCase
+class UserServiceTest extends TestCase
 {
     use WithFaker;
 
-    private CustomerService $customerService;
+    private UserService $userService;
 
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var CustomerService $customerService */
-        $customerService = app(CustomerService::class);
-        $this->customerService = $customerService;
+        /** @var UserService $userService */
+        $userService = app(UserService::class);
+        $this->userService = $userService;
     }
 
     /**
-     * @throws CreateCustomerException
+     * @throws CreateUserException
      */
     public function testCreateSuccess(): void
     {
-        $customer = $this->customerService->createCustomer([
+        $customer = $this->userService->create([
             'name' => $name = $this->faker->name,
             'email' => $email = $this->faker->email,
             'password' => $this->faker->password,
         ]);
 
-        $this->assertInstanceOf(Customer::class, $customer);
+        $this->assertInstanceOf(User::class, $customer);
         $this->assertDatabaseHas(
-            (new Customer())->getTable(),
+            (new User())->getTable(),
             [
                 'name' => $name,
                 'email' => $email
@@ -45,12 +45,12 @@ class CustomerServiceTest extends TestCase
     }
 
     /**
-     * @throws CreateCustomerException
+     * @throws CreateUserException
      */
     public function testCreateNameError(): void
     {
-        $this->expectException(CreateCustomerException::class);
-        $this->customerService->createCustomer([
+        $this->expectException(CreateUserException::class);
+        $this->userService->create([
             'name' => '',
             'email' => $this->faker->email,
             'password' => $this->faker->password,
@@ -58,12 +58,12 @@ class CustomerServiceTest extends TestCase
     }
 
     /**
-     * @throws CreateCustomerException
+     * @throws CreateUserException
      */
     public function testCreateEmailEmptyError(): void
     {
-        $this->expectException(CreateCustomerException::class);
-        $this->customerService->createCustomer([
+        $this->expectException(CreateUserException::class);
+        $this->userService->create([
             'name' => $this->faker->name,
             'email' => '',
             'password' => $this->faker->password,
@@ -71,32 +71,32 @@ class CustomerServiceTest extends TestCase
     }
 
     /**
-     * @throws UpdateCustomerException
+     * @throws UserUpdateException
      */
     public function testUpdateCustomerSuccess(): void
     {
-        $customer = Customer::factory()->create();
+        $customer = User::factory()->create();
 
-        $this->customerService->updateCustomer($customer, [
+        $this->userService->update($customer, [
             'name' => $name = $this->faker->name,
             'email' => $email = $this->faker->email,
         ]);
 
-        $customer = Customer::find($customer->id);
+        $customer = User::find($customer->id);
 
         $this->assertEquals($customer->name, $name);
         $this->assertEquals($customer->email, $email);
     }
 
     /**
-     * @throws UpdateCustomerException
+     * @throws UserUpdateException
      */
     public function testUpdateCustomerError(): void
     {
-        $customer = Customer::factory()->create();
+        $customer = User::factory()->create();
 
-        $this->expectException(UpdateCustomerException::class);
-        $this->customerService->updateCustomer($customer, [
+        $this->expectException(UserUpdateException::class);
+        $this->userService->update($customer, [
             'name' => '',
             'email' => $email = $this->faker->email,
         ]);

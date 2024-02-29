@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Enums\GuardsEnum;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -27,14 +26,21 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
-            foreach (GuardsEnum::values() as $guard) {
-                Route::prefix($guard)
-                    ->middleware($guard)
-                    ->group(base_path('routes/' . $guard . '.php'));
-            }
+            Route::middleware('api')
+                ->prefix('api-admin')
+                ->group(base_path('routes/api-admin.php'));
 
             Route::middleware('api')
-                ->group(base_path('routes/api.php'));
+                ->prefix('api-manager')
+                ->group(base_path('routes/api-manager.php'));
+
+            Route::middleware('api')
+                ->prefix('api-customer')
+                ->group(base_path('routes/api-customer.php'));
+
+            Route::middleware('api')
+                ->prefix('api-public')
+                ->group(base_path('routes/api-public.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));

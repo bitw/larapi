@@ -6,16 +6,23 @@ namespace App\Enums;
 
 enum RolesEnum: string
 {
-    case EMPLOYEE_ADMIN = 'employee-admin';
-    case EMPLOYEE_MANAGER = 'employee-manager';
+    public const string GUARD = 'api';
+
+    case ADMIN = 'admin';
+    case MANAGER = 'manager';
     case CUSTOMER = 'customer';
 
     public function label(): string
     {
         return match ($this) {
-            RolesEnum::EMPLOYEE_ADMIN => 'Employee Admin',
-            RolesEnum::EMPLOYEE_MANAGER => 'Employee manager',
+            RolesEnum::ADMIN => 'Administrator',
+            RolesEnum::MANAGER => 'Manager',
             RolesEnum::CUSTOMER => 'Customer'
         };
+    }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
     }
 }

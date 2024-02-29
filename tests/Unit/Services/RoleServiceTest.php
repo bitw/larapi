@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services;
 
-use App\Enums\GuardsEnum;
 use App\Enums\RolesEnum;
 use App\Exceptions\CreateRoleException;
 use App\Services\RoleService;
@@ -28,8 +27,8 @@ class RoleServiceTest extends TestCase
     public function testCreateRoleIfNotExistSuccess(): void
     {
         $role = $this->roleService->createRoleIfNotExist(
-            name: RolesEnum::EMPLOYEE_ADMIN->value,
-            guardName: GuardsEnum::GUARD_API_ADMIN->value
+            name: RolesEnum::ADMIN->value,
+            guardName: RolesEnum::GUARD
         );
         $this->assertInstanceOf(Role::class, $role);
     }
@@ -39,7 +38,7 @@ class RoleServiceTest extends TestCase
         $this->expectException(CreateRoleException::class);
         $this->roleService->createRoleIfNotExist(
             name: '',
-            guardName: GuardsEnum::GUARD_API_ADMIN->value
+            guardName: RolesEnum::GUARD
         );
     }
 
@@ -51,7 +50,7 @@ class RoleServiceTest extends TestCase
         $this->expectException(\TypeError::class);
         $this->roleService->createRoleIfNotExist(
             name: null, // @phpstan-ignore-line
-            guardName: GuardsEnum::GUARD_API_ADMIN->value
+            guardName: RolesEnum::GUARD
         );
     }
 }

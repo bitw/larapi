@@ -2,106 +2,68 @@
 
 declare(strict_types=1);
 
-use App\Enums\GuardsEnum;
 use App\Enums\RolesEnum;
-use App\Services\CustomerService;
-use App\Services\EmployeeService;
+use App\Services\UserService;
 use App\Services\RoleService;
 use Illuminate\Database\Migrations\Migration;
-use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 return new class () extends Migration {
-    private EmployeeService $employeeService;
-    private CustomerService $customerService;
-    private RoleService $roleService;
+    private UserService $userService;
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        /** @var EmployeeService $employeeService */
-        $employeeService = app(EmployeeService::class);
-        $this->employeeService = $employeeService;
-
-        /** @var CustomerService $customerService */
-        $customerService = app(CustomerService::class);
-        $this->customerService = $customerService;
+        /** @var UserService $userService */
+        $userService = app(UserService::class);
+        $this->userService = $userService;
 
         /** @var RoleService $roleService */
         $roleService = app(RoleService::class);
-        $this->roleService = $roleService;
 
-        $permissionApiAdminForAdmin = Permission::create([
-            'name' => GuardsEnum::GUARD_API_ADMIN->value,
-            'guard_name' => GuardsEnum::GUARD_API_ADMIN->value
-        ]);
-        $permissionApiManagerForAdmin = Permission::create([
-            'name' => GuardsEnum::GUARD_API_MANAGER->value,
-            'guard_name' => GuardsEnum::GUARD_API_ADMIN->value
-        ]);
-        $permissionApiCustomerForAdmin = Permission::create([
-            'name' => GuardsEnum::GUARD_API_CUSTOMER->value,
-            'guard_name' => GuardsEnum::GUARD_API_ADMIN->value
-        ]);
-        $roleAdmin = $this->roleService->createRoleIfNotExist(
-            name: RolesEnum::EMPLOYEE_ADMIN->value,
-            guardName: GuardsEnum::GUARD_API_ADMIN->value
+        $roleAdmin = $roleService->createRoleIfNotExist(
+            name: RolesEnum::ADMIN->value,
+            guardName: 'api',
         );
-        $roleAdmin->givePermissionTo($permissionApiAdminForAdmin);
-        $roleAdmin->givePermissionTo($permissionApiManagerForAdmin);
-        $roleAdmin->givePermissionTo($permissionApiCustomerForAdmin);
 
-        $permissionApiManagerForManager = Permission::create([
-            'name' => GuardsEnum::GUARD_API_MANAGER->value,
-            'guard_name' => GuardsEnum::GUARD_API_MANAGER->value
-        ]);
-        $permissionApiCustomerForManager = Permission::create([
-            'name' => GuardsEnum::GUARD_API_CUSTOMER->value,
-            'guard_name' => GuardsEnum::GUARD_API_MANAGER->value
-        ]);
-        $roleManager = $this->roleService->createRoleIfNotExist(
-            name: RolesEnum::EMPLOYEE_MANAGER->value,
-            guardName: GuardsEnum::GUARD_API_MANAGER->value
+        $roleManager = $roleService->createRoleIfNotExist(
+            name: RolesEnum::MANAGER->value,
+            guardName: 'api',
         );
-        $roleManager->givePermissionTo($permissionApiManagerForManager);
-        $roleManager->givePermissionTo($permissionApiCustomerForManager);
 
-        $permissionApiCustomerForCustomer = Permission::create([
-            'name' => GuardsEnum::GUARD_API_CUSTOMER->value,
-            'guard_name' => GuardsEnum::GUARD_API_CUSTOMER->value
-        ]);
-        $roleCustomer = $this->roleService->createRoleIfNotExist(
+        $roleCustomer = $roleService->createRoleIfNotExist(
             name: RolesEnum::CUSTOMER->value,
-            guardName: GuardsEnum::GUARD_API_CUSTOMER->value
+            guardName: 'api',
         );
-        $roleCustomer->givePermissionTo($permissionApiCustomerForCustomer);
 
-        $this->createAdmin();
-        $this->createManager();
+        $this->createAdmin($roleAdmin);
+        $this->createManager($roleManager);
         $this->createCustomer();
     }
 
-    private function createAdmin(): void
+    private function createAdmin(Role $role): void
     {
-        $this->employeeService->createAdmin([
+        $this->userService->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => 'password-123-admin',
-        ]);
+        ], $role);
     }
 
-    private function createManager(): void
+    private function createManager(Role $role): void
     {
-        $this->employeeService->createManager([
+        $this->userService->create([
             'name' => 'Manager',
             'email' => 'manager@example.com',
             'password' => 'password-123-manager',
-        ]);
+        ], $role);
     }
 
     private function createCustomer(): void
     {
-        $this->customerService->createCustomer([
+        $this->userService->create([
             'name' => 'Customer',
             'email' => 'customer@example.com',
             'password' => 'password-123-customer',
