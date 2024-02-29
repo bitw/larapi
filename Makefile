@@ -65,4 +65,4 @@ rector:
 	${PHP_FPM} ./vendor/bin/rector --dry-run --memory-limit=1G > rector-report.json
 
 coverage:
-	${PHP_FPM} ./vendor/bin/phpunit -d --memory_limit=1G --coverage-html=reports/phpunit
+	${PHP_FPM} ./vendor/bin/phpunit -d --memory_limit=1G --coverage-html=reports/phpunit && google-chrome ./reports/phpunit/index.html

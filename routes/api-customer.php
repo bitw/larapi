@@ -1,13 +1,12 @@
 <?php
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Customer\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')
-    ->prefix('/v1')
+Route::middleware([
+    'auth:sanctum',
+    'role:customer',
+])->prefix('/v1')
     ->group(static function () {
-        Route::get('/user', function (Request $request) {
-            return new JsonResponse($request->user());
-        });
+        Route::get('/user',[UserController::class, 'user']);
     });

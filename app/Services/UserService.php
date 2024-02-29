@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Enums\RolesEnum;
-use App\Exceptions\CreateUserException;
+use App\Exceptions\UserCreateException;
 use App\Exceptions\UserUpdateException;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ class UserService
     }
 
     /**
-     * @throws CreateUserException
+     * @throws UserCreateException
      */
     public function create(
         array $attributes,
@@ -40,7 +40,7 @@ class UserService
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
-            throw new CreateUserException($e);
+            throw new UserCreateException($e);
         }
 
         return $user;

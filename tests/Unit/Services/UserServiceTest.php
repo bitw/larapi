@@ -2,18 +2,22 @@
 
 namespace Tests\Unit\Services;
 
-use App\Exceptions\CreateUserException;
+use App\Exceptions\CreateRoleException;
+use App\Exceptions\UserCreateException;
 use App\Exceptions\UserUpdateException;
 use App\Models\User;
+use App\Services\RoleService;
 use App\Services\UserService;
 use Illuminate\Foundation\Testing\WithFaker;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class UserServiceTest extends TestCase
 {
     use WithFaker;
 
-    private UserService $userService;
+    private readonly UserService $userService;
+    private readonly RoleService $roleService;
 
     protected function setUp(): void
     {
@@ -21,18 +25,27 @@ class UserServiceTest extends TestCase
         /** @var UserService $userService */
         $userService = app(UserService::class);
         $this->userService = $userService;
+
+        /** @var RoleService $roleService */
+        $roleService = app(RoleService::class);
+        $this->roleService = $roleService;
     }
 
     /**
-     * @throws CreateUserException
+     * @throws UserCreateException
+     * @throws CreateRoleException
      */
     public function testCreateSuccess(): void
     {
-        $customer = $this->userService->create([
-            'name' => $name = $this->faker->name,
-            'email' => $email = $this->faker->email,
-            'password' => $this->faker->password,
-        ]);
+        $role = $this->roleService->createRoleIfNotExist('test');
+
+        $customer = $this->userService->create(
+            [
+                'name' => $name = $this->faker->name,
+                'email' => $email = $this->faker->email,
+                'password' => $this->faker->password,
+            ]
+        );
 
         $this->assertInstanceOf(User::class, $customer);
         $this->assertDatabaseHas(
@@ -45,11 +58,30 @@ class UserServiceTest extends TestCase
     }
 
     /**
-     * @throws CreateUserException
+     * @throws CreateRoleException
+     * @throws UserCreateException
+     */
+    public function testCreateWithTestRoleSuccess(): void{
+        $role = $this->roleService->createRoleIfNotExist('test');
+
+        $customer = $this->userService->create(
+            [
+                'name' => $this->faker->name,
+                'email' => $this->faker->email,
+                'password' => $this->faker->password,
+            ],
+            $role
+        );
+
+        $this->assertTrue($customer->hasRole('test'));
+    }
+
+    /**
+     * @throws UserCreateException
      */
     public function testCreateNameError(): void
     {
-        $this->expectException(CreateUserException::class);
+        $this->expectException(UserCreateException::class);
         $this->userService->create([
             'name' => '',
             'email' => $this->faker->email,
@@ -58,11 +90,11 @@ class UserServiceTest extends TestCase
     }
 
     /**
-     * @throws CreateUserException
+     * @throws UserCreateException
      */
     public function testCreateEmailEmptyError(): void
     {
-        $this->expectException(CreateUserException::class);
+        $this->expectException(UserCreateException::class);
         $this->userService->create([
             'name' => $this->faker->name,
             'email' => '',

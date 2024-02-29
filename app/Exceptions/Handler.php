@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Spatie\Permission\Exceptions\UnauthorizedException;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,6 +28,13 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (UnauthorizedException $e, $request) {
+            return new JsonResponse(
+                ['message' => __('common.access_denied')],
+                Response::HTTP_FORBIDDEN
+            );
         });
     }
 }
