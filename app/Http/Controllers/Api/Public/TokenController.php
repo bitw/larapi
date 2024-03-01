@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Public;
 
 use App\Enums\RolesEnum;
-use App\Http\Requests\ApiPublic\TokenRequest;
 use App\Http\Responses\OkJsonResponse;
 use App\Http\Responses\UnprocessableEntityJsonResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use TokenRequest;
 
 class TokenController
 {

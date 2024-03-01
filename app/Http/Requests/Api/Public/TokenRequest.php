@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Http\Requests\ApiPublic;
-
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -12,7 +10,7 @@ class TokenRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return !auth()->hasUser();
+        return auth()->guest();
     }
 
     /**
@@ -28,7 +26,8 @@ class TokenRequest extends FormRequest
                 'email'
             ],
             'password' => [
-                'required'
+                'required',
+
             ],
         ];
     }

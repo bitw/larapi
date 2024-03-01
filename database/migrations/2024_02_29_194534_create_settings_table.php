@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Setting;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +21,12 @@ return new class () extends Migration {
 
             $table->index(['name', 'active']);
         });
+
+        Setting::create(
+            'allow_registration',
+            'common.allow_registation',
+            true
+        );
     }
 
     /**
