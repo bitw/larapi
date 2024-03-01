@@ -15,8 +15,7 @@ return new class () extends Migration {
             $table->string('name')->unique();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('type');
-            $table->string('value');
+            $table->text('value');
             $table->boolean('active')->default(true);
 
             $table->index(['name', 'active']);

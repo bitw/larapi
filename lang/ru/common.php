@@ -7,5 +7,6 @@ return [
     'forgot_password?' => 'Забыли пароль?',
     'email' => 'Эл.почта',
     'password' => 'Пароль',
-    'access_denied' => 'Доступ запрещен'
+    'access_denied' => 'Доступ запрещен',
+    'invalid_email_or_password' => 'Не верный адрес эл.почты или пароль',
 ];
