@@ -38,6 +38,18 @@ class SettingHelperTest extends TestCase
         $this->assertTrue(10 === Setting::getValue('test'));
     }
 
+    public function testSetSuccess(): void
+    {
+        Setting::set('test', 20);
+        $this->assertTrue(20 === Setting::getValue('test'));
+    }
+
+    public function testSetError(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+        Setting::set('tesssssst', 20);
+    }
+
     public function testExistTrue(): void
     {
         $this->assertTrue(Setting::exists('test'));
