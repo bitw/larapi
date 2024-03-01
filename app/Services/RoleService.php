@@ -19,7 +19,7 @@ class RoleService
             throw new CreateRoleException('Role name not specified.');
         }
 
-        if($guardName === null){
+        if ($guardName === null) {
             $guardName = RolesEnum::GUARD;
         }
 

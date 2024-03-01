@@ -9,15 +9,14 @@ use App\Models\User;
 use App\Services\RoleService;
 use App\Services\UserService;
 use Illuminate\Foundation\Testing\WithFaker;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class UserServiceTest extends TestCase
 {
     use WithFaker;
 
-    private readonly UserService $userService;
-    private readonly RoleService $roleService;
+    private UserService $userService;
+    private RoleService $roleService;
 
     protected function setUp(): void
     {
@@ -61,7 +60,8 @@ class UserServiceTest extends TestCase
      * @throws CreateRoleException
      * @throws UserCreateException
      */
-    public function testCreateWithTestRoleSuccess(): void{
+    public function testCreateWithTestRoleSuccess(): void
+    {
         $role = $this->roleService->createRoleIfNotExist('test');
 
         $customer = $this->userService->create(

@@ -16,7 +16,7 @@ use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
- * App\Models\Customer
+ * App\Models\User
  *
  * @property int $id
  * @property string $ulid

@@ -8,5 +8,5 @@ Route::middleware([
     'role:customer',
 ])->prefix('/v1')
     ->group(static function () {
-        Route::get('/user',[UserController::class, 'user']);
+        Route::get('/user', [UserController::class, 'user']);
     });

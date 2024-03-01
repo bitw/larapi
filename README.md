@@ -1,21 +1,12 @@
 
-# Quickly create a Laravel project.
+# Quickly create a Laravel project API Backend.
 
 ## Laravel version 10.x
-
-## Содержание \ Contents
-
-1. [Установка](#--setup)
-2. [Ссылки](#--links)
-3. [Команды Makefile](#-makefile--makefile-commands)
-4. [Настройка Firefox](#-firefox--firefox-setup)
-5. [Тестовые сотрудники](#---test-employees)
-6. [Как создать нового сотрудника?](#-----how-create-new-employee)
 
 ## Установка \ Setup:
 1. Объявить локальный домен
    ```
-   sudo echo -e "\n127.0.0.1 fast.laravel\n" >> /etc/hosts
+   sudo echo -e "\n127.0.0.1 <имя_домена>\n" >> /etc/hosts
    ```
 2. Настроить сертификат
    ```
@@ -46,3 +37,12 @@
   make bash
   make console
   ```
+- Отчет по покрытию тестами (с открытием в хроме)
+  ```
+  make coverage-show
+  ```
+- Отчет по покрытию тестами (только регенерация)
+  ```
+  make coverage
+  ```
+и добавляются в процессе разработки

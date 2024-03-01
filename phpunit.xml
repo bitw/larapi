@@ -29,6 +29,7 @@
     <exclude>
       <directory>./routes</directory>
       <directory>./app/Providers</directory>
+      <directory>./app/Exceptions</directory>
     </exclude>
   </source>
 </phpunit>
