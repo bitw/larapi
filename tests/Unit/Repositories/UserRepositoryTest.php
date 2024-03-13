@@ -4,7 +4,6 @@ namespace Unit\Repositories;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -35,8 +34,7 @@ class UserRepositoryTest extends TestCase
 
     public function testFindByIdNotFoundException(): void
     {
-        $this->expectException(ModelNotFoundException::class);
-        $this->userRepository->findById(0);
+        $this->assertNull($this->userRepository->findById(0));
     }
 
     public function testFindByUlidSuccess(): void
@@ -51,8 +49,7 @@ class UserRepositoryTest extends TestCase
 
     public function testFindByUlidNotFoundException(): void
     {
-        $this->expectException(ModelNotFoundException::class);
-        $this->userRepository->findByUlid(Str::ulid());
+        $this->assertNull($this->userRepository->findByUlid(Str::ulid()));
     }
 
     public function testFindByEmailSuccess(): void
@@ -67,7 +64,6 @@ class UserRepositoryTest extends TestCase
 
     public function testFindByEmailNotFound(): void
     {
-        $this->expectException(ModelNotFoundException::class);
-        $this->userRepository->findByEmail($this->faker->email);
+        $this->assertNull($this->userRepository->findByEmail($this->faker->email));
     }
 }

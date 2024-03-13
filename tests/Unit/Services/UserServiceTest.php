@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Unit\Services;
 
 use App\Exceptions\CreateRoleException;
 use App\Exceptions\UserCreateException;
@@ -83,7 +83,6 @@ class UserServiceTest extends TestCase
     {
         $this->expectException(UserCreateException::class);
         $this->userService->create([
-            'name' => '',
             'email' => $this->faker->email,
             'password' => $this->faker->password,
         ]);
@@ -129,8 +128,7 @@ class UserServiceTest extends TestCase
 
         $this->expectException(UserUpdateException::class);
         $this->userService->update($customer, [
-            'name' => '',
-            'email' => $email = $this->faker->email,
+            'email' => null,
         ]);
     }
 }

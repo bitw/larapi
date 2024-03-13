@@ -6,22 +6,31 @@ use App\Models\User;
 
 class UserRepository
 {
-    public function findById(int $id): User
+    public function findById(int $id): ?User
     {
-        return User::findOrFail($id);
+        /** @var User $user */
+        $user = User::find($id);
+
+        return $user;
     }
 
-    public function findByUlid(string $ulid): User
+    public function findByUlid(string $ulid): ?User
     {
-        return User::query()
+        /** @var User $user */
+        $user = User::query()
             ->where('ulid', $ulid)
-            ->firstOrFail();
+            ->first();
+
+        return $user;
     }
 
-    public function findByEmail(string $email): User
+    public function findByEmail(string $email): ?User
     {
-        return User::query()
+        /** @var User $user */
+        $user = User::query()
             ->where('email', $email)
-            ->firstOrFail();
+            ->first();
+
+        return $user;
     }
 }

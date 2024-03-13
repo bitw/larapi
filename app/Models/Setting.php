@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Setting query()
  * @method static Setting where(...$arg)
  * @method static Setting create(array $attributes)
- * @method static Setting update(array $attributes)
+ * @method static int update(array $attributes)
  * @method static Setting first()
  * @method static Setting firstOrFail()
  * @method static Setting find($value)

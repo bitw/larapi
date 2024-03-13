@@ -6,13 +6,15 @@ use App\Enums\RolesEnum;
 use App\Exceptions\UserCreateException;
 use App\Exceptions\UserUpdateException;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class UserService
 {
     public function __construct(
-        protected RoleService $roleService
+        protected UserRepository $userRepository,
+        protected RoleService $roleService,
     ) {
     }
 
@@ -23,8 +25,13 @@ class UserService
         array $attributes,
         ?Role $role = null,
     ): User {
+        if ($this->userRepository->findByEmail($attributes['email'])) {
+            throw new UserCreateException(__('common.user_already_exist'));
+        }
+
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
+            /** @var User $user */
             $user = User::create($attributes);
 
             if ($role === null) {
@@ -46,12 +53,15 @@ class UserService
         return $user;
     }
 
+    /**
+     * @throws UserUpdateException
+     */
     public function update(
         User $user,
         array $attributes,
     ): User {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
             $user->update($attributes);
             DB::commit();
         } catch (\Throwable $e) {

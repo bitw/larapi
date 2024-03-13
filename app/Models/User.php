@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -20,22 +20,22 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @property int $id
  * @property string $ulid
- * @property string|null $name
- * @property string|null $email
+ * @property string $name
+ * @property string $email
  * @property string $password
  * @property CarbonInterface|null $email_verified_at
  * @property CarbonInterface $created_at
  * @property CarbonInterface|null $updated_at
  * @property CarbonInterface|null $blocked_at
  * @property string|null $blocked_reason
- * @method static Builder|self newModelQuery()
- * @method static Builder|self newQuery()
- * @method static Builder|self query()
- * @method static Builder|self create(array $attributes)
- * @method static Builder|self first()
- * @method static Builder|self firstOrFail()
- * @method static Builder|self find($value)
- * @method static Builder|self findOrFail($value)
+ * @method static Builder newModelQuery()
+ * @method static Builder newQuery()
+ * @method static Builder query()
+ * @method static Builder create(array $attributes)
+ * @method static Builder first()
+ * @method static Builder firstOrFail()
+ * @method static Builder find($value)
+ * @method static Builder findOrFail($value)
  */
 class User extends Authenticatable
 {
@@ -89,7 +89,7 @@ class User extends Authenticatable
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => empty(trim($value)) ? null : $value,
+            set: fn (string $value) => empty(trim($value)) ? '' : $value,
         );
     }
 

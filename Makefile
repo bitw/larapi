@@ -4,7 +4,7 @@ UID:=`id -u`
 GID:=`id -g`
 UIDS:=UID=${UID} GID=${GID}
 PHP_FPM:=${UIDS} docker compose exec php-fpm
-PG_VOLUME:=qclp_pg_data
+PG_VOLUME:=postgres_data
 
 up:
 	${UIDS} docker compose up -d

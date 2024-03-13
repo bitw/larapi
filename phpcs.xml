@@ -21,4 +21,5 @@
     <exclude-pattern>resources/views/*</exclude-pattern>
     <exclude-pattern>_ide_helper.php</exclude-pattern>
     <exclude-pattern>public/index.php</exclude-pattern>
+    <exclude-pattern>volumes/*</exclude-pattern>
 </ruleset>

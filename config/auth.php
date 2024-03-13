@@ -43,7 +43,7 @@ return [
             'provider' => 'user',
         ],
         'api' => [
-            'driver' => 'session',
+            'driver' => 'passport',
             'provider' => 'user',
             //'remember' => 60 * 24 * 30,
         ],

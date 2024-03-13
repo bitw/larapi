@@ -4,7 +4,6 @@ namespace Unit\Helpers;
 
 use App\Helpers\Setting;
 use App\Models\Setting as SettingModel;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCase;
 
 class SettingHelperTest extends TestCase
@@ -27,10 +26,9 @@ class SettingHelperTest extends TestCase
         $this->assertInstanceOf(SettingModel::class, Setting::getSetting('test'));
     }
 
-    public function testGetSettingModelNotFoundException(): void
+    public function testGetSetting(): void
     {
-        $this->expectException(ModelNotFoundException::class);
-        Setting::getSetting('abc');
+        $this->assertNull(Setting::getSetting('abc'));
     }
 
     public function testGetValueSuccess(): void
@@ -41,13 +39,13 @@ class SettingHelperTest extends TestCase
     public function testSetSuccess(): void
     {
         Setting::set('test', 20);
+
         $this->assertTrue(20 === Setting::getValue('test'));
     }
 
     public function testSetError(): void
     {
-        $this->expectException(ModelNotFoundException::class);
-        Setting::set('tesssssst', 20);
+        $this->assertEquals(0, Setting::set('tesssssst', 20));
     }
 
     public function testExistTrue(): void

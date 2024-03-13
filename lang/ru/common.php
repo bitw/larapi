@@ -9,4 +9,5 @@ return [
     'password' => 'Пароль',
     'access_denied' => 'Доступ запрещен',
     'invalid_email_or_password' => 'Не верный адрес эл.почты или пароль',
+    'user_already_exist' => 'Такой пользователь существует',
 ];

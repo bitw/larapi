@@ -23,4 +23,6 @@ yarn-error.log
 codequality.json
 phpcs.json
 .phpcs-cache
-rector-report.json
+rector-report.json/public/vendor
+/public/vendor
+/rector-report.json

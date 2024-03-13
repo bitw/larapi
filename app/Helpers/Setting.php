@@ -6,38 +6,33 @@ use App\Models\Setting as SettingModel;
 
 class Setting
 {
-    public static function getSetting(string $name): SettingModel
+    public static function getSetting(string $name): ?SettingModel
     {
         return SettingModel::query()
-                ->where('name', $name)
-                ->firstOrFail();
+            ->where('name', $name)
+            ->first();
     }
 
     public static function getValue(string $name)
     {
         $setting = self::getSetting($name);
-
-        return unserialize($setting->value);
+        return unserialize($setting->value) ?? null;
     }
 
     public static function exists(string $name): bool
     {
-        return SettingModel::query()
-            ->where('name', $name)
-            ->exists();
+        return self::getSetting($name) !== null;
     }
 
     public static function set(
         string $name,
         $value,
-    ): SettingModel {
-        $setting = self::getSetting($name);
-
-        $setting->update([
-            'value' => serialize($value),
-        ]);
-
-        return $setting;
+    ): int {
+        return SettingModel::query()
+            ->where('name', $name)
+            ->update([
+                'value' => serialize($value),
+            ]);
     }
 
     public static function create(
@@ -62,13 +57,15 @@ class Setting
 
     public static function disable(string $name): void
     {
-        $setting = self::getSetting($name);
-        $setting->update(['active' => false]);
+        SettingModel::query()
+            ->where('name', $name)
+            ->update(['active' => false]);
     }
 
     public static function enable(string $name): void
     {
-        $setting = self::getSetting($name);
-        $setting->update(['active' => true]);
+        SettingModel::query()
+            ->where('name', $name)
+            ->update(['active' => true]);
     }
 }

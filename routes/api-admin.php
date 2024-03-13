@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([
-    'auth:sanctum',
     'role:admin',
 ])->prefix('/v1')
     ->group(static function () {
